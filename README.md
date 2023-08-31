@@ -3,7 +3,7 @@
 Simple Telegram Bot API library for PHP
 
 ## Quick Start
-
+### Sample 1: Start
 ```php
 require 'Bot.php';
 
@@ -12,6 +12,8 @@ Bot::start('Welcome, I am a bot.');
 Bot::run();
 ```
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/bot-start.png'>
+
+### Sample 2: Keyboard
 
 ```php
 require 'Bot.php';
@@ -30,6 +32,25 @@ Bot::chat('/help', function(){
 Bot::run();
 ```
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/keyboard.png'>
+
+### Sample 3: Inline Keyboard
+
+```php
+Bot::setToken(BOT_TOKEN, BOT_USERNAME);
+
+Bot::chat('/inline_keyboard', function(){
+    $inline_keyboard = Bot::inline_keyboard('
+    [Google|https://www.google.com] [Facebook|https://www.facebook.com]
+    [More|more_data]
+    ');
+    $options = ['reply_markup' => $inline_keyboard];
+    return Bot::sendMessage("Options:", $options);
+});
+
+Bot::run();
+```
+
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/inline_keyboard.png'>
 
 ### Properties
 
