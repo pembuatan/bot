@@ -107,12 +107,13 @@ Note that all properties and methods are static. For example: `Bot::$property` o
 
 ### Bot Properties
 
-| Property     | Type    | Description                              |
-| ------------ | ------- | ---------------------------------------- |
+| Property     | Type    | Description|
+| --- | --- | ---|
 | token        | string  | bot token from @BotFather                |
 | name         | string  | bot name from @BotFather                 |
 | url          | string  | telegram URL for endpoint                |
 | getUpdates   | array   | parsed-JSON from Telegram server         |
+| inputObject   | object   | decoded-JSON from Telegram server         |
 | \_command    | array   | list of commands and responses           |
 | \_onMessage  | array   | list of events (types) and the responses |
 | version      | integer | app version                              |

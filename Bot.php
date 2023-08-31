@@ -34,6 +34,11 @@ class Bot
     public static $getUpdates = [];
 
     /**
+     * Input object
+     */
+    public static $inputObject = '';
+
+    /**
      * array of commands and the responses
      */
     public static $_command = [];
@@ -309,6 +314,23 @@ class Bot
     }
 
     /**
+     * Get Updates
+     * @return array
+     */
+    public static function getUpdates()
+    {
+        return self::$getUpdates;
+    }
+
+    /**
+     * Get raw input data
+     */
+    public static function getInputObject()
+    {
+        return;
+    }
+
+    /**
      * Run telebot.
      *
      * @return bool
@@ -343,7 +365,9 @@ class Bot
     private static function webhook()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['CONTENT_TYPE'] == 'application/json') {
-            self::$getUpdates = json_decode(file_get_contents('php://input'), true);
+            $input = file_get_contents('php://input');
+            self::$inputObject = json_decode($input);
+            self::$getUpdates = json_decode($input, true);
             echo self::process();
         } else {
             http_response_code(400);
