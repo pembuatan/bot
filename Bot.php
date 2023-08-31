@@ -156,7 +156,7 @@ class Bot
     public static function chat_array(array $array)
     {
         foreach ($array as $key => $value) {
-            return self::chat($key, $value);
+            self::chat($key, $value);
         }
     }
 
@@ -533,7 +533,7 @@ class Bot
                 $data['chat_id'] = $getUpdates['channel_post']['chat']['id'];
             }
             // Reply message
-            if (!isset($data['reply_to_message_id'])) {
+            if (isset($getUpdates['message']['message_id']) && !isset($data['reply_to_message_id'])) {
                 $data['reply_to_message_id'] = $getUpdates['message']['message_id'];
             }
             if (isset($data['reply']) && $data['reply'] === false) unset($data['reply_to_message_id']);
