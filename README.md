@@ -54,6 +54,25 @@ Bot::chat('/send', function($file){
 
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/send-document.png'>
 
+### Sample 5: Chat Array
+
+```php
+$help = function(){
+    return Bot::sendMessage("This is <b>bold</b> and <i>italic</i> text.", ['parse_mode' => 'html']);
+};
+
+$info = function() {
+    Bot::sendChatAction('typing');
+    Bot::sendDocument('composer.json', ['caption' => 'for composer']);
+};
+
+Bot::chat_array([
+    '/help' => $help,
+    '/info' => $info,
+]);
+```
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/chat_array.png'>
+
 ## Documentation
 
 Note that all properties and methods are static.
