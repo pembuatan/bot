@@ -27,10 +27,9 @@ Bot::chat('/help', function(){
     return Bot::sendMessage("List of Commands:", $options);
 });
 
-<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/keyboard.png'>
-
 Bot::run();
 ```
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/keyboard.png'>
 
 ### Properties
 
