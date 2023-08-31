@@ -131,8 +131,8 @@ Note that all properties and methods are static. For example: `Bot::$property` o
 |setAdmin| `integer` admin ID||
 |isAdmin|| to check if user is admin|
 | name | | to get bot name |
-| chat | `string` command, `string | callback` response | to set command and its response |
-| cmd | `string` command, `string | callback` response | to set command and its response |
+| chat | `string` command, `string or callable` response | to set command and its response |
+| cmd | `string` command, `string or callable` response | to set command and its response |
 | chat_array | `array` list of command and its response | to set command and its response |
 | keyboard | `string` keyboard pattern, `string` input_field_placeholder = 'type here', `boolean` resize_keyboard = true, `boolean` one_time_keyboard = true | to create keyboard(s) from string |
 | inline_keyboard | `string` keyboard pattern | to create keyboard(s) from string |
@@ -141,8 +141,8 @@ Note that all properties and methods are static. For example: `Bot::$property` o
 | user | | to get user first name (and last name) |
 | from_id | | to get user ID |
 | chat_id | | to get chat ID |
-| on | `string` type, `string | callback` response | to set response |
-| regex | `string` pattern, `string | callback` response | to set response |
+| on | `string` type, `string or callable` response | to set response |
+| regex | `string` pattern, `string or callable` response | to set response |
 | run | | to run the bot |
 | send | `string` method, `array` data | to send request to Telegram server |
 | answerInlineQuery | result, `array` options = [] | to answer Inline Query |
