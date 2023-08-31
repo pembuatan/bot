@@ -11,7 +11,7 @@ Bot::setToken(BOT_TOKEN, BOT_USERNAME);
 Bot::start('Welcome, I am a bot.');
 Bot::run();
 ```
-<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/bots-start.png'>
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/bot-start.png'>
 
 ### Properties
 
