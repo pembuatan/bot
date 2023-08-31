@@ -13,6 +13,25 @@ Bot::run();
 ```
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/bot-start.png'>
 
+```php
+require 'Bot.php';
+
+Bot::setToken(BOT_TOKEN, BOT_USERNAME);
+
+Bot::chat('/help', function(){
+    $keyboard = Bot::keyboard('
+    [/info] [/admin]
+    [/help]
+    ');
+    $options = ['reply_markup' => $keyboard];
+    return Bot::sendMessage("List of Commands:", $options);
+});
+
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/keyboard.png'>
+
+Bot::run();
+```
+
 ### Properties
 
 |Property|Type|Description|
