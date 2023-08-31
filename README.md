@@ -73,6 +73,19 @@ Bot::chat_array([
 ```
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/chat_array.png'>
 
+### Sample 6: Regex
+```php
+Bot::regex('/^\/start (\d+)$/', function($m){
+    return Bot::sendMessage($m[1]);
+});
+Bot::start(function(){
+    return Bot::sendMessage('Press button bellow:', ['reply_markup'=>Bot::inline_keyboard('[BUTTON|https://t.me/Testing58384bot?start=1234567890]')]);
+});
+```
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/regex1.png'>
+
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/regex2.png'>
+
 ## Documentation
 
 Note that all properties and methods are static.

@@ -283,10 +283,10 @@ class Bot
      */
     public static function on($types, $answer)
     {
-        // if ($types == 'start') {
-        //     self::$_command['/start'] = $answer;
-        //     return;
-        // }
+        if ($types == 'start') {
+            self::$_command['/start'] = $answer;
+            return;
+        }
         if ($types == '*') {
             self::$_onMessage['*'] = $answer;
             return;
