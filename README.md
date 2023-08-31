@@ -133,7 +133,7 @@ Note that all properties and methods are static. For example: `Bot::$property` o
 | name | | to get bot name |
 | chat | `string` command, `string or callable` response | to set command and its response |
 | cmd | `string` command, `string or callable` response | to set command and its response |
-| chat_array | `array` list of command and its response | to set command and its response |
+| chat_array | `associative array` list of command (key) and its response (value) | to set command and its response |
 | keyboard | `string` keyboard pattern, `string` input_field_placeholder = 'type here', `boolean` resize_keyboard = true, `boolean` one_time_keyboard = true | to create keyboard(s) from string |
 | inline_keyboard | `string` keyboard pattern | to create keyboard(s) from string |
 | message_id | | to get message id |
@@ -144,13 +144,13 @@ Note that all properties and methods are static. For example: `Bot::$property` o
 | on | `string` type, `string or callable` response | to set response |
 | regex | `string` pattern, `string or callable` response | to set response |
 | run | | to run the bot |
-| send | `string` method, `array` data | to send request to Telegram server |
+| send | `string` method, `associative array` data | to send request to Telegram server |
 | answerInlineQuery | result, `array` options = [] | to answer Inline Query |
 | answerCallbackQuery | text, `array` options = [] | to answer Callback Query |
 | message | | to get body of message JSON from user |
 | type | | to get type of message |
-| `__callStatic` | `string` method, `array` parameters | to get type of message |
-| prosesPesan | `string` teks, `array` data = null | to get type of message |
+| `__callStatic` | `string` method, `array` parameters | to call any method |
+| prosesPesan | `string` teks, `array` data = null | to send a long message |
 | bg_exec | `string` function name, `array` parameters, `string` PHP script to be loaded first, `integer` timeout = 1000 | to call function in background |
 
 ### Telegram Events
