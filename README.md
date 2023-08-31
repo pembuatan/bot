@@ -103,7 +103,7 @@ Bot::start(function(){
 
 ## Documentation
 
-Note that all properties and methods are static.
+Note that all properties and methods are static. For example: `Bot::$property` or `Bot::method()`.
 
 ### Bot Properties
 
@@ -152,6 +152,52 @@ Note that all properties and methods are static.
 | `__callStatic`      | `string` method, `array` parameters                                                                                                             | to get type of message                 |
 | prosesPesan         | `string` teks, `array` data = null                                                                                                              | to get type of message                 |
 | bg_exec             | `string` function name, `array` parameters, `string` PHP script to be loaded first, `integer` timeout = 1000                                    | to call function in background         |
+
+### Telegram Events
+
+Note that event parameters up to 2 parameters. For example: `Bot::start($param1, $param2)`.
+
+* `all` (when user send anything, it's similar with `on('*', $response)` method)
+* `start` (when user send `/start` text message or press `START` button)
+* `text` (see: [docs](https://core.telegram.org/bots/api#message))
+* `animation`
+* `audio`
+* `document`
+* `photo`
+* `sticker`
+* `video`
+* `video_note`
+* `voice`
+* `contact`
+* `dice`
+* `game`
+* `poll`
+* `venue`
+* `location`
+* `message_auto_delete_timer_changed`
+* `pinned_message`
+* `invoice`
+* `successful_payment`
+* `user_shared`
+* `chat_shared`
+* `write_access_allowed`
+* `passport_data`
+* `proximity_alert_triggered`
+* `forum_topic_created`
+* `forum_topic_edited`
+* `forum_topic_closed`
+* `forum_topic_reopened`
+* `general_forum_topic_hidden`
+* `general_forum_topic_unhidden`
+* `voice_chat_scheduled`
+* `voice_chat_started`
+* `voice_chat_ended`
+* `voice_chat_participants_invited`
+* `inline_query`
+* `callback_query`
+* `edited_message`
+* `channel_post`
+* `edited_channel_post`
 
 ### Telegram Methods
 

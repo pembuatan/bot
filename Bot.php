@@ -667,77 +667,41 @@ class Bot
     {
         $getUpdates = self::$getUpdates;
 
-        if (isset($getUpdates['message']['text'])) {
-            return 'text';
-        } elseif (isset($getUpdates['message']['animation'])) {
-            return 'animation';
-        } elseif (isset($getUpdates['message']['photo'])) {
-            return 'photo';
-        } elseif (isset($getUpdates['message']['video'])) {
-            return 'video';
-        } elseif (isset($getUpdates['message']['video_note'])) {
-            return 'video_note';
-        } elseif (isset($getUpdates['message']['audio'])) {
-            return 'audio';
-        } elseif (isset($getUpdates['message']['contact'])) {
-            return 'contact';
-        } elseif (isset($getUpdates['message']['dice'])) {
-            return 'dice';
-        } elseif (isset($getUpdates['message']['poll'])) {
-            return 'poll';
-        } elseif (isset($getUpdates['message']['voice'])) {
-            return 'voice';
-        } elseif (isset($getUpdates['message']['document'])) {
-            return 'document';
-        } elseif (isset($getUpdates['message']['sticker'])) {
-            return 'sticker';
-        } elseif (isset($getUpdates['message']['venue'])) {
-            return 'venue';
-        } elseif (isset($getUpdates['message']['location'])) {
-            return 'location';
-        } elseif (isset($getUpdates['inline_query'])) {
-            return 'inline_query';
-        } elseif (isset($getUpdates['callback_query'])) {
-            return 'callback_query';
-        } elseif (isset($getUpdates['message']['new_chat_members'])) {
-            return 'new_chat_members';
-        } elseif (isset($getUpdates['message']['left_chat_members'])) {
-            return 'left_chat_members';
-        } elseif (isset($getUpdates['message']['new_chat_title'])) {
-            return 'new_chat_title';
-        } elseif (isset($getUpdates['message']['new_chat_photo'])) {
-            return 'new_chat_photo';
-        } elseif (isset($getUpdates['message']['delete_chat_photo'])) {
-            return 'delete_chat_photo';
-        } elseif (isset($getUpdates['message']['group_chat_created'])) {
-            return 'group_chat_created';
-        } elseif (isset($getUpdates['message']['channel_chat_created'])) {
-            return 'channel_chat_created';
-        } elseif (isset($getUpdates['message']['supergroup_chat_created'])) {
-            return 'supergroup_chat_created';
-        } elseif (isset($getUpdates['message']['migrate_to_chat_id'])) {
-            return 'migrate_to_chat_id';
-        } elseif (isset($getUpdates['message']['migrate_from_chat_id'])) {
-            return 'migrate_from_chat_id';
-        } elseif (isset($getUpdates['message']['pinned_message'])) {
-            return 'pinned_message';
-        } elseif (isset($getUpdates['message']['invoice'])) {
-            return 'invoice';
-        } elseif (isset($getUpdates['message']['successful_payment'])) {
-            return 'successful_payment';
-        } elseif (isset($getUpdates['message']['connected_website'])) {
-            return 'connected_website';
-        } elseif (isset($getUpdates['edited_message'])) {
-            return 'edited_message';
-        } elseif (isset($getUpdates['message']['game'])) {
-            return 'game';
-        } elseif (isset($getUpdates['channel_post'])) {
-            return 'channel_post';
-        } elseif (isset($getUpdates['edited_channel_post'])) {
-            return 'edited_channel_post';
-        } else {
-            return 'unknown';
-        }
+        if (isset($getUpdates['message']['text'])) return 'text';
+        if (isset($getUpdates['message']['animation'])) return 'animation';
+        if (isset($getUpdates['message']['photo'])) return 'photo';
+        if (isset($getUpdates['message']['video'])) return 'video';
+        if (isset($getUpdates['message']['video_note'])) return 'video_note';
+        if (isset($getUpdates['message']['audio'])) return 'audio';
+        if (isset($getUpdates['message']['contact'])) return 'contact';
+        if (isset($getUpdates['message']['dice'])) return 'dice';
+        if (isset($getUpdates['message']['poll'])) return 'poll';
+        if (isset($getUpdates['message']['voice'])) return 'voice';
+        if (isset($getUpdates['message']['document'])) return 'document';
+        if (isset($getUpdates['message']['sticker'])) return 'sticker';
+        if (isset($getUpdates['message']['venue'])) return 'venue';
+        if (isset($getUpdates['message']['location'])) return 'location';
+        if (isset($getUpdates['inline_query'])) return 'inline_query';
+        if (isset($getUpdates['callback_query'])) return 'callback_query';
+        if (isset($getUpdates['message']['new_chat_members'])) return 'new_chat_members';
+        if (isset($getUpdates['message']['left_chat_members'])) return 'left_chat_members';
+        if (isset($getUpdates['message']['new_chat_title'])) return 'new_chat_title';
+        if (isset($getUpdates['message']['new_chat_photo'])) return 'new_chat_photo';
+        if (isset($getUpdates['message']['delete_chat_photo'])) return 'delete_chat_photo';
+        if (isset($getUpdates['message']['group_chat_created'])) return 'group_chat_created';
+        if (isset($getUpdates['message']['channel_chat_created'])) return 'channel_chat_created';
+        if (isset($getUpdates['message']['supergroup_chat_created'])) return 'supergroup_chat_created';
+        if (isset($getUpdates['message']['migrate_to_chat_id'])) return 'migrate_to_chat_id';
+        if (isset($getUpdates['message']['migrate_from_chat_id'])) return 'migrate_from_chat_id';
+        if (isset($getUpdates['message']['pinned_message'])) return 'pinned_message';
+        if (isset($getUpdates['message']['invoice'])) return 'invoice';
+        if (isset($getUpdates['message']['successful_payment'])) return 'successful_payment';
+        if (isset($getUpdates['message']['connected_website'])) return 'connected_website';
+        if (isset($getUpdates['edited_message'])) return 'edited_message';
+        if (isset($getUpdates['message']['game'])) return 'game';
+        if (isset($getUpdates['channel_post'])) return 'channel_post';
+        if (isset($getUpdates['edited_channel_post'])) return 'edited_channel_post';
+        else return 'unknown';
     }
 
     public static function __callStatic(string $action, array $args)
@@ -779,13 +743,24 @@ class Bot
             'pinned_message',
             'invoice',
             'successful_payment',
+            'user_shared',
+            'chat_shared',
+            'write_access_allowed',
             'connected_website',
             'passport_data',
             'proximity_alert_triggered',
+            'forum_topic_created',
+            'forum_topic_edited',
+            'forum_topic_closed',
+            'forum_topic_reopened',
+            'general_forum_topic_hidden',
+            'general_forum_topic_unhidden',
             'voice_chat_scheduled',
             'voice_chat_started',
             'voice_chat_ended',
             'voice_chat_participants_invited',
+            'web_app_data',
+            'reply_markup',
             'inline_query',
             'callback_query',
             'edited_message',
