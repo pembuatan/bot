@@ -3,23 +3,20 @@
 Simple Telegram Bot API library for PHP
 
 ## Quick Start
+Initiate with `setToken` and end with `run` method.
 ### Sample 1: Start
 ```php
 require 'Bot.php';
 
-Bot::setToken(BOT_TOKEN, BOT_USERNAME);
-Bot::start('Welcome, I am a bot.');
-Bot::run();
+Bot::setToken(BOT_TOKEN, BOT_USERNAME); //init (required)
+Bot::start('Welcome, I am a bot.'); //event
+Bot::run(); //launch (required)
 ```
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/bot-start.png'>
 
 ### Sample 2: Keyboard
 
 ```php
-require 'Bot.php';
-
-Bot::setToken(BOT_TOKEN, BOT_USERNAME);
-
 Bot::chat('/help', function(){
     $keyboard = Bot::keyboard('
     [/info] [/admin]
@@ -28,16 +25,12 @@ Bot::chat('/help', function(){
     $options = ['reply_markup' => $keyboard];
     return Bot::sendMessage("List of Commands:", $options);
 });
-
-Bot::run();
 ```
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/keyboard.png'>
 
 ### Sample 3: Inline Keyboard
 
 ```php
-Bot::setToken(BOT_TOKEN, BOT_USERNAME);
-
 Bot::chat('/inline_keyboard', function(){
     $inline_keyboard = Bot::inline_keyboard('
     [Google|https://www.google.com] [Facebook|https://www.facebook.com]
@@ -46,13 +39,25 @@ Bot::chat('/inline_keyboard', function(){
     $options = ['reply_markup' => $inline_keyboard];
     return Bot::sendMessage("Options:", $options);
 });
-
-Bot::run();
 ```
 
 <img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/inline_keyboard.png'>
 
-### Properties
+### Sample 4: Sending Document
+
+```php
+Bot::chat('/send', function($file){
+    if (file_exists($file)) return Bot::sendDocument($file);
+    return Bot::sendMessage("$file not exists");
+});
+```
+
+<img src='https://github.com/dannsbass/dannsbass.github.io/blob/master/assets/img/send-document.png'>
+
+## Documentation
+
+Note that all properties and methods are static.
+### Bot Properties
 
 |Property|Type|Description|
 |---|---|---|
@@ -70,7 +75,7 @@ Bot::run();
 |chat_id|integer|from ID|
 |admin_id|integer|admin ID|
 
-### Static Methods
+### Bot Methods
 
 |Method|Parameter(s)|Description|
 |---|---|---|
@@ -100,3 +105,15 @@ Bot::run();
 |prosesPesan|`string` teks, `array` data = null|to get type of message|
 |bg_exec|`string` function name, `array` parameters, `string` PHP script to be loaded first, `integer` timeout = 1000|to call function in background|
 
+### Telegram Methods
+
+All Telegram methods are compatible with this bot. For example:
+
+```php
+echo Bot::getMe();
+echo Bot::setWebhook(WEBHOOK_URL);
+echo Bot::getWebhookInfo();
+echo Bot::deleteWebhook(true); //default is `false` for `drop_pending_updates`, see: https://core.telegram.org/bots/api#deletewebhook
+```
+
+See more: https://core.telegram.org/bots/api#available-methods 
