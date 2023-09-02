@@ -1,2 +1,2 @@
 <?php
-include 'sample.php';
+include 'Bot.php';
