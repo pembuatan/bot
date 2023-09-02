@@ -1,0 +1,1 @@
+curl -s https://raw.githubusercontent.com/dannsbass/bots/master/Bot.php > Bot.php
