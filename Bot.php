@@ -959,7 +959,7 @@ class Bot
      */
     public static function bg_exec(string $function_name, array $params = [], string $str_requires = '', int $timeout = 1000, $debug = false)
     {
-        $cmd = "(php -r \"chdir('".dirname($_SERVER['SCRIPT_FILENAME'])."'); ".strtr($str_requires, array('"' => '\"', '$' => '\$', '`' => '\`', '\\' => '\\\\', '!' => '\!'))." \\\$params=json_decode(file_get_contents('php://stdin'), true); \\\$res = call_user_func_array('{$function_name}', \\\$params); file_put_contents('debug.danns.txt' , 'res: ' . \\\$res); \" <&3 &) 3<&0"; //php by default use "sh", and "sh" don't support "<&0"
+        $cmd = "(php -r \"chdir('".dirname($_SERVER['SCRIPT_FILENAME'])."'); ".strtr($str_requires, array('"' => '\"', '$' => '\$', '`' => '\`', '\\' => '\\\\', '!' => '\!'))." \\\$params=json_decode(file_get_contents('php://stdin'), true); \\\$res = call_user_func_array('{$function_name}', \\\$params); \" <&3 &) 3<&0"; //php by default use "sh", and "sh" don't support "<&0"
         $stdin = json_encode($params);
         $start = time();
         $stdout = '';
