@@ -957,12 +957,10 @@ class Bot
      * For backgroud process
      * example: bg_exec('Class::method', [$param1, $param2], 'require "functions.php"; require "config.php"; ', 1000);
      */
-    public static function bg_exec(string $function_name, array $params, string $str_requires, int $timeout = 1000, $debug = false)
+    public static function bg_exec(string $function_name, array $params = [], string $str_requires = '', int $timeout = 1000, $debug = false)
     {
-        file_put_contents('debug.danns.txt', file_get_contents('php://stdin'));
         $cmd = "(php -r \"chdir('".dirname($_SERVER['SCRIPT_FILENAME'])."'); ".strtr($str_requires, array('"' => '\"', '$' => '\$', '`' => '\`', '\\' => '\\\\', '!' => '\!'))." \\\$params=json_decode(file_get_contents('php://stdin'), true); \\\$res = call_user_func_array('{$function_name}', \\\$params); file_put_contents('debug.danns.txt' , 'res: ' . \\\$res); \" <&3 &) 3<&0"; //php by default use "sh", and "sh" don't support "<&0"
         $stdin = json_encode($params);
-        $debug = true;
         $start = time();
         $stdout = '';
         $stderr = '';
