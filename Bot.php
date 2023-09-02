@@ -551,6 +551,8 @@ class Bot
                 $data['chat_id'] = $getUpdates['channel_post']['chat']['id'];
             } elseif (isset($getUpdates['my_chat_member'])) {
                 $data['chat_id'] = $getUpdates['my_chat_member']['chat']['id'];
+            } elseif (isset(self::$admin_id)) {
+                $data['chat_id'] = self::$admin_id;
             }
             // Reply message
             if (isset($getUpdates['message']['message_id']) && !isset($data['reply_to_message_id'])) {
@@ -849,7 +851,7 @@ class Bot
                 $param = array_merge($param, $args[1]);
             }
         }
-        return call_user_func_array('self::send', [$action, $param]);
+        return call_user_func_array( __CLASS__ . '::send', [$action, $param]);
     }
 
     /**
