@@ -424,14 +424,14 @@ class Bot
             self::$user = $get['message']['from']['first_name'] ?? '';
             self::$user .= $get['message']['from']['last_name'] ?? '';
             self::$from_id = $get['message']['from']['id'];
-            self::$chat_id = $get['message']['chat']['id'];
+            self::$chat_id = $get['message']['chat']['id'] ?? self::$admin_id;
             self::$message_text = $get['message']['text'] ?? '';
             self::$message_id = $get['message']['message_id'];
         } elseif (isset($get['my_chat_member'])) {
             self::$user = $get['my_chat_member']['from']['first_name'] ?? '';
             self::$user .= $get['my_chat_member']['from']['last_name'] ?? '';
             self::$from_id = $get['my_chat_member']['from']['id'];
-            self::$chat_id = $get['my_chat_member']['chat']['id'];
+            self::$chat_id = $get['my_chat_member']['chat']['id'] ?? self::$admin_id;
             self::$message_text = $get['my_chat_member']['text'] ?? '';
             self::$message_id = $get['my_chat_member']['message_id'] ?? '';
         }
@@ -549,6 +549,8 @@ class Bot
                 $data['chat_id'] = $getUpdates['message']['chat']['id'];
             } elseif (isset($getUpdates['channel_post'])) {
                 $data['chat_id'] = $getUpdates['channel_post']['chat']['id'];
+            } elseif (isset($getUpdates['my_chat_member'])) {
+                $data['chat_id'] = $getUpdates['my_chat_member']['chat']['id'];
             }
             // Reply message
             if (isset($getUpdates['message']['message_id']) && !isset($data['reply_to_message_id'])) {
@@ -701,13 +703,14 @@ class Bot
         if (isset($getUpdates['message']['location'])) return 'location';
         if (isset($getUpdates['inline_query'])) return 'inline_query';
         if (isset($getUpdates['callback_query'])) return 'callback_query';
-        if (isset($getUpdates['message']['new_chat_members'])) return 'new_chat_members';
-        if (isset($getUpdates['message']['left_chat_members'])) return 'left_chat_members';
+        if (isset($getUpdates['message']['new_chat_member'])) return 'new_chat_member';
+        if (isset($getUpdates['message']['left_chat_member'])) return 'left_chat_member';
         if (isset($getUpdates['message']['new_chat_title'])) return 'new_chat_title';
         if (isset($getUpdates['message']['new_chat_photo'])) return 'new_chat_photo';
         if (isset($getUpdates['message']['delete_chat_photo'])) return 'delete_chat_photo';
         if (isset($getUpdates['message']['group_chat_created'])) return 'group_chat_created';
         if (isset($getUpdates['message']['channel_chat_created'])) return 'channel_chat_created';
+        if (isset($getUpdates['my_chat_member'])) return 'my_chat_member';
         if (isset($getUpdates['message']['supergroup_chat_created'])) return 'supergroup_chat_created';
         if (isset($getUpdates['message']['migrate_to_chat_id'])) return 'migrate_to_chat_id';
         if (isset($getUpdates['message']['migrate_from_chat_id'])) return 'migrate_from_chat_id';
@@ -755,6 +758,7 @@ class Bot
             'group_chat_created',
             'supergroup_chat_created',
             'channel_chat_created',
+            'my_chat_member',
             'message_auto_delete_timer_changed',
             'migrate_to_chat_id',
             'migrate_from_chat_id',
