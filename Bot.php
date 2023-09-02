@@ -1,11 +1,5 @@
 <?php
 
-function reply(string $message, array $options = [])
-{
-    $options = array_merge($options, ['reply' => true]);
-    return Bot::sendMessage($message, $options);
-}
-
 class Bot
 {
     /**
@@ -963,27 +957,17 @@ class Bot
      * For backgroud process
      * example: bg_exec('Class::method', [$param1, $param2], 'require "functions.php"; require "config.php"; ', 1000);
      */
-    public static function bg_exec(string $function_name, array $params, string $str_requires, int $timeout = 1000)
+    public static function bg_exec(string $function_name, array $params, string $str_requires, int $timeout = 1000, $debug = false)
     {
-        $map = array('"' => '\"', '$' => '\$', '`' => '\`', '\\' => '\\\\', '!' => '\!');
-        $str_requires = strtr($str_requires, $map);
-        $path_run = dirname($_SERVER['SCRIPT_FILENAME']);
-        $my_target_exec = "php -r \"chdir('{$path_run}'); {$str_requires} \\\$params=json_decode(file_get_contents('php://stdin'), true); call_user_func_array('{$function_name}', \\\$params);\"";
-        $my_target_exec = strtr(strtr($my_target_exec, $map), $map);
-        $my_background_exec = "(php -r \"chdir('{$path_run}'); {$str_requires} " . __CLASS__ . "::my_timeout_exec(\\\"{$my_target_exec}\\\", file_get_contents('php://stdin'), {$timeout});\" <&3 &) 3<&0"; //php by default use "sh", and "sh" don't support "<&0"
-        self::my_timeout_exec($my_background_exec, json_encode($params), 2);
-    }
-
-    /**
-     * My time execution
-     */
-    private static function my_timeout_exec($cmd, $stdin = '', $timeout = 2)
-    {
+        file_put_contents('debug.danns.txt', file_get_contents('php://stdin'));
+        $cmd = "(php -r \"chdir('".dirname($_SERVER['SCRIPT_FILENAME'])."'); ".strtr($str_requires, array('"' => '\"', '$' => '\$', '`' => '\`', '\\' => '\\\\', '!' => '\!'))." \\\$params=json_decode(file_get_contents('php://stdin'), true); \\\$res = call_user_func_array('{$function_name}', \\\$params); file_put_contents('debug.danns.txt' , 'res: ' . \\\$res); \" <&3 &) 3<&0"; //php by default use "sh", and "sh" don't support "<&0"
+        $stdin = json_encode($params);
+        $debug = true;
         $start = time();
         $stdout = '';
         $stderr = '';
-        //file_put_contents('debug.txt', time().':cmd:'.$cmd."\n", FILE_APPEND);
-        //file_put_contents('debug.txt', time().':stdin:'.$stdin."\n", FILE_APPEND);
+        if($debug) file_put_contents('debug.txt', time().':cmd:'.$cmd."\n", FILE_APPEND);
+        if($debug) file_put_contents('debug.txt', time().':stdin:'.$stdin."\n", FILE_APPEND);
 
         $process = proc_open($cmd, [['pipe', 'r'], ['pipe', 'w'], ['pipe', 'w']], $pipes);
         if (!is_resource($process)) {
@@ -1005,12 +989,12 @@ class Bot
             if (time() - $start > $timeout) {
                 //proc_terminate($process, 9);    //only terminate subprocess, won't terminate sub-subprocess
                 posix_kill(-$status['pid'], 9);    //sends SIGKILL to all processes inside group(negative means GPID, all subprocesses share the top process group, except nested my_timeout_exec)
-                //file_put_contents('debug.txt', time().":kill group {$status['pid']}\n", FILE_APPEND);
+                if($debug) file_put_contents('debug.txt', time().":kill group {$status['pid']}\n", FILE_APPEND);
                 return array('return' => '1', 'stdout' => $stdout, 'stderr' => $stderr);
             }
 
             $status = proc_get_status($process);
-            //file_put_contents('debug.txt', time().':status:'.var_export($status, true)."\n";
+            if($debug) file_put_contents('debug.txt', time().':status:'.var_export($status, true)."\n");
             if (!$status['running']) {
                 fclose($pipes[1]);
                 fclose($pipes[2]);

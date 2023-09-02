@@ -136,7 +136,7 @@ Note that all properties and methods are static. For example: `Bot::$property` o
 | cmd | `string` command, `string or callable` response | to set command and its response |
 | chat_array | `associative array` list of command (key) and its response (value) | to set command and its response |
 | keyboard | `string` keyboard pattern, `string` input_field_placeholder = 'type here', `boolean` resize_keyboard = true, `boolean` one_time_keyboard = true | to create keyboard(s) from string |
-| inline_keyboard | `string` keyboard pattern | to create keyboard(s) from string |
+| inline_keyboard | `string` keyboard pattern | to create inline keyboard(s) from string |
 | message_id | | to get message id |
 | message_text | | to get message text |
 | user | | to get user first name (and last name) |
@@ -158,8 +158,8 @@ Note that all properties and methods are static. For example: `Bot::$property` o
 
 Note that event parameters up to 2 parameters. For example: `Bot::start($param1, $param2)`.
 
-* `all` (when user send anything, it's similar with `on('*', $response)` method)
-* `start` (when user send `/start` text message or press `START` button)
+* `all` (when user sends anything, it's similar with `on('*', $response)` method)
+* `start` (when user sends `/start` text message or presses `START` button)
 * `text` (see: [docs](https://core.telegram.org/bots/api#message))
 * `animation`
 * `audio`
