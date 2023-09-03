@@ -44,7 +44,7 @@ Bot::chat('/ls|/files', function(){
 
 # download file
 Bot::chat('/download', function ($file) {
-    if (empty($file)) return Bot::sendMessage("Usage: <code>download [file name]</code>", ['parse_mode' => 'html']);
+    if (empty($file)) return Bot::sendMessage("Usage: <code>/download [file name]</code>", ['parse_mode' => 'html']);
     if (!Bot::isAdmin()) return reply("Sorry, you are not Admin");
     if (!file_exists($file)) return reply("$file not exist");
     return Bot::sendDocument($file);
