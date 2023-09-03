@@ -20,6 +20,21 @@ require __DIR__ . '/config.php';
 # When user sends `/start`
 Bot::start('Welcome, I am a bot');
 
+# to handle text message
+Bot::text(function($text){
+    $msg = Bot::message();
+    if (isset($msg['reply_to_message'])){
+        switch ($text){
+            case '/del':
+                # delete replied message
+                Bot::deleteMessage();
+                # delete user message
+                return Bot::deleteMessage(Bot::$message_id);
+        }
+    }
+});
+
+# to handle inline keyboard when user pressed it
 Bot::callback_query(function($data){
     $char = '📎';
     $char_pos = strpos($data, $char);
@@ -44,8 +59,8 @@ Bot::chat('/ls|/files', function(){
 
 # download file
 Bot::chat('/download', function ($file) {
-    if (empty($file)) return Bot::sendMessage("Usage: <code>/download [file name]</code>", ['parse_mode' => 'html']);
     if (!Bot::isAdmin()) return reply("Sorry, you are not Admin");
+    if (empty($file)) return Bot::sendMessage("Usage: <code>/download [file name]</code>", ['parse_mode' => 'html']);
     if (!file_exists($file)) return reply("$file not exist");
     return Bot::sendDocument($file);
 });
