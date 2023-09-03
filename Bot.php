@@ -864,7 +864,7 @@ class Bot
     {
 
         // jika pesan teks TIDAK melebihi 4096 karakter, langsung kirim
-        if (strlen($teks) <= 4096) return self::sendMessage($teks);
+        if (strlen($teks) <= 4096) return self::sendMessage($teks, $data);
 
         // jika pesan teks melebihi 4096 karakter
         $pecahan = self::potong($teks, 4096);
