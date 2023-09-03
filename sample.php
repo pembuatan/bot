@@ -63,6 +63,7 @@ Bot::regex('/^\/([a-zA-Z_]+)([\d]+)$/', function ($match) {
 
 # When user sends anything
 Bot::all(function($anything){
+    # background process
     Bot::bg_exec('Bot::sendMessage', [$anything], 'require "config.php"; Bot::$getUpdates = json_decode(\''.json_encode(Bot::$getUpdates).'\', true);', 10000);
     return reply("You send $anything");
 });
