@@ -308,23 +308,6 @@ class Bot
     }
 
     /**
-     * Get Updates
-     * @return array
-     */
-    public static function getUpdates()
-    {
-        return self::$getUpdates;
-    }
-
-    /**
-     * Get raw input data
-     */
-    public static function getInputObject()
-    {
-        return;
-    }
-
-    /**
      * Run telebot.
      *
      * @return bool
