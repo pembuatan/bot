@@ -282,14 +282,6 @@ class Bot
      */
     public static function on($types, $answer)
     {
-        if ($types == 'start') {
-            self::$_command['/start'] = $answer;
-            return;
-        }
-        if ($types == '*') {
-            self::$_onMessage['*'] = $answer;
-            return;
-        }
         $types = explode('|', $types);
         foreach ($types as $type) {
             self::$_onMessage[$type] = $answer;
@@ -403,20 +395,21 @@ class Bot
         $get = self::$getUpdates;
         $run = false;
 
-        if (isset($get['message'])) {
-            self::$user = $get['message']['from']['first_name'] ?? '';
-            self::$user .= $get['message']['from']['last_name'] ?? '';
-            self::$from_id = $get['message']['from']['id'];
-            self::$chat_id = $get['message']['chat']['id'] ?? self::$admin_id;
-            self::$message_text = $get['message']['text'] ?? '';
-            self::$message_id = $get['message']['message_id'];
-        } elseif (isset($get['my_chat_member'])) {
-            self::$user = $get['my_chat_member']['from']['first_name'] ?? '';
-            self::$user .= $get['my_chat_member']['from']['last_name'] ?? '';
-            self::$from_id = $get['my_chat_member']['from']['id'];
-            self::$chat_id = $get['my_chat_member']['chat']['id'] ?? self::$admin_id;
-            self::$message_text = $get['my_chat_member']['text'] ?? '';
-            self::$message_id = $get['my_chat_member']['message_id'] ?? '';
+        $events = [
+            'message',
+            'my_chat_member',
+            'callback_query',
+        ];
+
+        foreach ($events as $key => $event) {
+            if (isset($get[$event])) {
+                self::$user = $get[$event]['from']['first_name'] ?? '';
+                self::$user .= $get[$event]['from']['last_name'] ?? '';
+                self::$from_id = $get[$event]['from']['id'];
+                self::$chat_id = $get[$event]['chat']['id'] ?? self::$admin_id;
+                self::$message_text = $get[$event]['text'] ?? '';
+                self::$message_id = $get[$event]['message_id'];
+            }
         }
 
         if (isset($get['message']['date']) && $get['message']['date'] < (time() - 120)) {
@@ -491,7 +484,6 @@ class Bot
                         $param = [$param];
                     }
                 }
-
                 return call_user_func_array($call, $param);
             } else {
                 if (!isset($get['inline_query'])) {
@@ -522,9 +514,9 @@ class Bot
         if (in_array($action, $needChatId) && !isset($data['chat_id'])) {
             //automate message_id
             if (in_array($action, $needMessageId) && !isset($data['message_id'])) {
-                if (isset($data['message_id']) and is_string($data['message_id']) and isset(json_decode($data['message_id'])->result->message_id)){
+                if (isset($data['message_id']) and is_string($data['message_id']) and isset(json_decode($data['message_id'])->result->message_id)) {
                     $data['message_id'] = (json_decode($data['message_id']))->result->message_id;
-                } elseif (isset(self::$getUpdates['message']['reply_to_message'])){
+                } elseif (isset(self::$getUpdates['message']['reply_to_message'])) {
                     $data['message_id'] = self::$getUpdates['message']['reply_to_message']['message_id'];
                 }
             }
@@ -673,44 +665,46 @@ class Bot
 
     public static function type()
     {
-        $getUpdates = self::$getUpdates;
-        
-        if (isset($getUpdates['message']['text'])) return 'text';
-        if (isset($getUpdates['message']['animation'])) return 'animation';
-        if (isset($getUpdates['message']['photo'])) return 'photo';
-        if (isset($getUpdates['message']['video'])) return 'video';
-        if (isset($getUpdates['message']['video_note'])) return 'video_note';
-        if (isset($getUpdates['message']['audio'])) return 'audio';
-        if (isset($getUpdates['message']['contact'])) return 'contact';
-        if (isset($getUpdates['message']['dice'])) return 'dice';
-        if (isset($getUpdates['message']['poll'])) return 'poll';
-        if (isset($getUpdates['message']['voice'])) return 'voice';
-        if (isset($getUpdates['message']['document'])) return 'document';
-        if (isset($getUpdates['message']['sticker'])) return 'sticker';
-        if (isset($getUpdates['message']['venue'])) return 'venue';
-        if (isset($getUpdates['message']['location'])) return 'location';
-        if (isset($getUpdates['message']['new_chat_member'])) return 'new_chat_member';
-        if (isset($getUpdates['message']['left_chat_member'])) return 'left_chat_member';
-        if (isset($getUpdates['message']['new_chat_title'])) return 'new_chat_title';
-        if (isset($getUpdates['message']['new_chat_photo'])) return 'new_chat_photo';
-        if (isset($getUpdates['message']['delete_chat_photo'])) return 'delete_chat_photo';
-        if (isset($getUpdates['message']['group_chat_created'])) return 'group_chat_created';
-        if (isset($getUpdates['message']['channel_chat_created'])) return 'channel_chat_created';
-        if (isset($getUpdates['message']['supergroup_chat_created'])) return 'supergroup_chat_created';
-        if (isset($getUpdates['message']['migrate_to_chat_id'])) return 'migrate_to_chat_id';
-        if (isset($getUpdates['message']['migrate_from_chat_id'])) return 'migrate_from_chat_id';
-        if (isset($getUpdates['message']['pinned_message'])) return 'pinned_message';
-        if (isset($getUpdates['message']['invoice'])) return 'invoice';
-        if (isset($getUpdates['message']['successful_payment'])) return 'successful_payment';
-        if (isset($getUpdates['message']['connected_website'])) return 'connected_website';
-        if (isset($getUpdates['message']['game'])) return 'game';
-        if (isset($getUpdates['edited_message'])) return 'edited_message';
-        if (isset($getUpdates['channel_post'])) return 'channel_post';
-        if (isset($getUpdates['edited_channel_post'])) return 'edited_channel_post';
-        if (isset($getUpdates['my_chat_member'])) return 'my_chat_member';
-        if (isset($getUpdates['inline_query'])) return 'inline_query';
-        if (isset($getUpdates['callback_query'])) return 'callback_query';
-        else return 'unknown';
+        $events = [
+            'text',
+            'animation',
+            'photo',
+            'video',
+            'video_note',
+            'audio',
+            'contact',
+            'dice',
+            'game',
+            'poll',
+            'voice',
+            'document',
+            'sticker',
+            'venue',
+            'location',
+            'new_chat_members',
+            'new_chat_member',
+            'left_chat_member',
+            'new_chat_title',
+            'new_chat_photo',
+            'delete_chat_photo',
+            'group_chat_created',
+            'supergroup_chat_created',
+            'channel_chat_created',
+            'message_auto_delete_timer_changed',
+            'migrate_to_chat_id',
+            'migrate_from_chat_id',
+            'pinned_message',
+            'invoice',
+            'successful_payment',
+            'user_shared',
+            'chat_shared',
+            'connected_website',
+            'write_access_allowed',
+        ];
+        foreach ($events as $event) {
+            if (isset(self::$getUpdates['message'][$event])) return $event;
+        }
+        return isset(array_keys(self::$getUpdates)[1]) ? array_keys(self::$getUpdates)[1] : 'unknown';
     }
 
     public static function __callStatic(string $action, array $args)
@@ -788,14 +782,15 @@ class Bot
          */
         if (in_array($action, $types)) {
             if ($action == 'all') {
-                return self::on('*', $args[0]);
+                self::$_onMessage['*'] = $args[0];
+                return;
             }
-            if ($action == 'start'){
-                if (isset($args[1])){
-                    return self::chat('/start', function()use($args){
-                        return self::send('sendMessage', array_merge(['text'=>$args[0]], $args[1]));
+            if ($action == 'start') {
+                if (isset($args[1])) {
+                    return self::chat('/start', function () use ($args) {
+                        return self::send('sendMessage', array_merge(['text' => $args[0]], $args[1]));
                     });
-                }else{
+                } else {
                     return self::$_command['/start'] = $args[0];
                 }
             }
@@ -837,7 +832,7 @@ class Bot
                 $param = array_merge($param, $args[1]);
             }
         }
-        return call_user_func_array( __CLASS__ . '::send', [$action, $param]);
+        return call_user_func_array(__CLASS__ . '::send', [$action, $param]);
     }
 
     /**
@@ -951,13 +946,13 @@ class Bot
      */
     public static function bg_exec(string $function_name, array $params = [], string $str_requires = '', int $timeout = 1000, $debug = false)
     {
-        $cmd = "(php -r \"chdir('".dirname($_SERVER['SCRIPT_FILENAME'])."'); ".strtr($str_requires, array('"' => '\"', '$' => '\$', '`' => '\`', '\\' => '\\\\', '!' => '\!'))." \\\$params=json_decode(file_get_contents('php://stdin'), true); \\\$res = call_user_func_array('{$function_name}', \\\$params); \" <&3 &) 3<&0"; //php by default use "sh", and "sh" don't support "<&0"
+        $cmd = "(php -r \"chdir('" . dirname($_SERVER['SCRIPT_FILENAME']) . "'); " . strtr($str_requires, array('"' => '\"', '$' => '\$', '`' => '\`', '\\' => '\\\\', '!' => '\!')) . " \\\$params=json_decode(file_get_contents('php://stdin'), true); \\\$res = call_user_func_array('{$function_name}', \\\$params); \" <&3 &) 3<&0"; //php by default use "sh", and "sh" don't support "<&0"
         $stdin = json_encode($params);
         $start = time();
         $stdout = '';
         $stderr = '';
-        if($debug) file_put_contents('debug.txt', time().':cmd:'.$cmd."\n", FILE_APPEND);
-        if($debug) file_put_contents('debug.txt', time().':stdin:'.$stdin."\n", FILE_APPEND);
+        if ($debug) file_put_contents('debug.txt', time() . ':cmd:' . $cmd . "\n", FILE_APPEND);
+        if ($debug) file_put_contents('debug.txt', time() . ':stdin:' . $stdin . "\n", FILE_APPEND);
 
         $process = proc_open($cmd, [['pipe', 'r'], ['pipe', 'w'], ['pipe', 'w']], $pipes);
         if (!is_resource($process)) {
@@ -979,12 +974,12 @@ class Bot
             if (time() - $start > $timeout) {
                 //proc_terminate($process, 9);    //only terminate subprocess, won't terminate sub-subprocess
                 posix_kill(-$status['pid'], 9);    //sends SIGKILL to all processes inside group(negative means GPID, all subprocesses share the top process group, except nested my_timeout_exec)
-                if($debug) file_put_contents('debug.txt', time().":kill group {$status['pid']}\n", FILE_APPEND);
+                if ($debug) file_put_contents('debug.txt', time() . ":kill group {$status['pid']}\n", FILE_APPEND);
                 return array('return' => '1', 'stdout' => $stdout, 'stderr' => $stderr);
             }
 
             $status = proc_get_status($process);
-            if($debug) file_put_contents('debug.txt', time().':status:'.var_export($status, true)."\n");
+            if ($debug) file_put_contents('debug.txt', time() . ':status:' . var_export($status, true) . "\n");
             if (!$status['running']) {
                 fclose($pipes[1]);
                 fclose($pipes[2]);
