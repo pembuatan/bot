@@ -408,7 +408,7 @@ class Bot
                 self::$from_id = $get[$event]['from']['id'];
                 self::$chat_id = $get[$event]['chat']['id'] ?? self::$admin_id;
                 self::$message_text = $get[$event]['text'] ?? '';
-                self::$message_id = $get[$event]['message_id'];
+                self::$message_id = $event == 'callback_query' ? $get[$event]['message']['message_id'] : $get[$event]['message_id'];
             }
         }
 
