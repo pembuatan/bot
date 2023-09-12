@@ -1039,9 +1039,9 @@ class Bot
     /**
      * For debugging via Bot message
      */
-    public static function debug($result){
+    public static function debug($result = null){
+        if (is_null($result)) return Bot::sendMessage(json_encode(Bot::message(), JSON_PRETTY_PRINT));
         $object = json_decode($result);
-        if (!$object || !$object->ok) 
-          return Bot::sendMessage($result);
+        if (!$object || !$object->ok) return Bot::sendMessage(json_encode($result, JSON_PRETTY_PRINT));
     }
 }
