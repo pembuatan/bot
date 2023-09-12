@@ -1035,4 +1035,13 @@ class Bot
         self::folderToZip($sourcePath, $z, strlen("$parentPath/"));
         $z->close();
     }
+    
+    /**
+     * For debugging via Bot message
+     */
+    public static function debug($result){
+        $object = json_decode($result);
+        if (!$object || !$object->ok) 
+          return Bot::sendMessage($result);
+    }
 }
