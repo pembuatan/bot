@@ -509,7 +509,7 @@ class Bot
 
         $needChatId = ['sendMessage', 'forwardMessage', 'sendPhoto', 'sendAudio', 'sendDocument', 'sendSticker', 'sendVideo', 'sendVoice', 'sendLocation', 'sendVenue', 'sendContact', 'sendChatAction', 'editMessageText', 'editMessageCaption', 'editMessageReplyMarkup', 'sendGame', 'deleteMessage'];
 
-        $needMessageId = ['editMessageText', 'deleteMessage', 'editMessageReplyMarkup', 'editMessageCaption'];
+        $needMessageId = ['editMessageText', 'deleteMessage', 'editMessageReplyMarkup', 'editMessageCaption', 'editMessageMedia'];
 
         if (in_array($action, $needChatId) && !isset($data['chat_id'])) {
             //automate message_id
