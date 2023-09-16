@@ -507,22 +507,26 @@ class Bot
             }
         }
 
-        $needChatId = ['sendMessage', 'forwardMessage', 'sendPhoto', 'sendAudio', 'sendDocument', 'sendSticker', 'sendVideo', 'sendVoice', 'sendLocation', 'sendVenue', 'sendContact', 'sendChatAction', 'editMessageText', 'editMessageCaption', 'editMessageReplyMarkup', 'sendGame', 'deleteMessage'];
+        $needChatId = ['sendMessage', 'forwardMessage', 'sendPhoto', 'sendAudio', 'sendDocument', 'sendSticker', 'sendVideo', 'sendVoice', 'sendLocation', 'sendVenue', 'sendContact', 'sendChatAction', 'editMessageText', 'editMessageCaption', 'editMessageReplyMarkup', 'sendGame', 'deleteMessage', 'editMessageMedia'];
 
         $needMessageId = ['editMessageText', 'deleteMessage', 'editMessageReplyMarkup', 'editMessageCaption', 'editMessageMedia'];
 
+        if (isset(self::$getUpdates['callback_query'])) {
+            self::$getUpdates = self::$getUpdates['callback_query'];
+        }
+
+        //automate message_id
+        if (in_array($action, $needMessageId) && !isset($data['message_id'])) {
+            if (isset($data['message_id']) and is_string($data['message_id']) and isset(json_decode($data['message_id'])->result->message_id)) {
+                $data['message_id'] = (json_decode($data['message_id']))->result->message_id;
+            } elseif (isset(self::$getUpdates['message']['message_id'])){
+                $data['message_id'] = self::$getUpdates['message']['message_id'];
+            } elseif (isset(self::$getUpdates['message']['reply_to_message'])) {
+                $data['message_id'] = self::$getUpdates['message']['reply_to_message']['message_id'];
+            }
+        }
+        //automate chat id
         if (in_array($action, $needChatId) && !isset($data['chat_id'])) {
-            //automate message_id
-            if (in_array($action, $needMessageId) && !isset($data['message_id'])) {
-                if (isset($data['message_id']) and is_string($data['message_id']) and isset(json_decode($data['message_id'])->result->message_id)) {
-                    $data['message_id'] = (json_decode($data['message_id']))->result->message_id;
-                } elseif (isset(self::$getUpdates['message']['reply_to_message'])) {
-                    $data['message_id'] = self::$getUpdates['message']['reply_to_message']['message_id'];
-                }
-            }
-            if (isset(self::$getUpdates['callback_query'])) {
-                self::$getUpdates = self::$getUpdates['callback_query'];
-            }
             if (isset(self::$getUpdates['message']['chat']['id'])) {
                 $data['chat_id'] = self::$getUpdates['message']['chat']['id'];
             } elseif (isset(self::$getUpdates['channel_post'])) {
@@ -532,13 +536,15 @@ class Bot
             } elseif (isset(self::$admin_id)) {
                 $data['chat_id'] = self::$admin_id;
             }
-            // Reply message
-            if (isset(self::$getUpdates['message']['message_id']) && !isset($data['reply_to_message_id'])) {
-                $data['reply_to_message_id'] = self::$getUpdates['message']['message_id'];
-            }
-            if (isset($data['reply']) && $data['reply'] === false) unset($data['reply_to_message_id']);
+        }
+        
+        // automate reply message
+        if (isset(self::$getUpdates['message']['message_id']) && !isset($data['reply_to_message_id'])) {
+            $data['reply_to_message_id'] = self::$getUpdates['message']['message_id'];
         }
 
+        // no reply
+        if (isset($data['reply']) && $data['reply'] === false) unset($data['reply_to_message_id']);
 
         if (isset($data['reply_markup']) && is_array($data['reply_markup'])) {
             $data['reply_markup'] = json_encode($data['reply_markup']);
