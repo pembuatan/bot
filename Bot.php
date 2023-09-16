@@ -1,4 +1,5 @@
 <?php
+use danog\Decoder\FileId;
 
 class Bot
 {
@@ -511,8 +512,15 @@ class Bot
 
         $needMessageId = ['editMessageText', 'deleteMessage', 'editMessageReplyMarkup', 'editMessageCaption', 'editMessageMedia'];
 
+        $needMediaId = ['editMessageMedia'];
+
         if (isset(self::$getUpdates['callback_query'])) {
             self::$getUpdates = self::$getUpdates['callback_query'];
+        }
+
+        if (in_array($action, $needMediaId) && isset($data['media']) && is_string($data['media'])){
+            $fileId = FileId::fromBotAPI($data['media']);
+            $data['media'] = json_encode(['type' => $fileId->getTypeName(), 'media' => $data['media']]);
         }
 
         //automate message_id
@@ -826,6 +834,7 @@ class Bot
             'editMessageText' => 'text',
             'editMessageReplyMarkup' => 'message_id',
             'editMessageCaption' => 'message_id',
+            'editMessageMedia' => 'media',
             'deleteMessage' => 'message_id',
         ];
         if (!isset($firstParam[$action])) {

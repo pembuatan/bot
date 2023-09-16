@@ -19,7 +19,8 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0"
+        "php": ">=7.4.0",
+        "danog/tg-file-decoder": "^0.1.13"
     },
     "autoload": {
         "files": [
