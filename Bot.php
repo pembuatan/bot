@@ -524,7 +524,7 @@ class Bot
         }
 
         //automate message_id
-        if (in_array($action, $needMessageId) && !isset($data['message_id'])) {
+        if (in_array($action, $needMessageId)) {
             if (isset($data['message_id']) and is_string($data['message_id']) and isset(json_decode($data['message_id'])->result->message_id)) {
                 $data['message_id'] = (json_decode($data['message_id']))->result->message_id;
             } elseif (isset(self::$getUpdates['message']['message_id'])){
