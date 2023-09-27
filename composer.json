@@ -1,20 +1,20 @@
 {
-    "name": "dannsbass/bots",
+    "name": "pembuatan/bot",
     "type": "library",
-    "description": "Simple Telegram Bot API library for PHP",
+    "description": "Pustaka sederhana untuk pembuatan bot Telegram dengan menggunakan bahasa PHP",
     "keywords": [
         "Telegram",
         "Telegram bot",
         "Telegram bot API",
         "Telegram bot library"
     ],
-    "homepage": "https://github.com/dannsbass/bots",
+    "homepage": "https://github.com/pembuatan/bot",
     "license": "MIT",
     "authors": [
         {
-            "name": "Danns Bass",
-            "email": "dannsbass@gmail.com",
-            "homepage": "https://github.com/dannsbass",
+            "name": "Pembuatan",
+            "email": "pembuatan@ibnumasud.my",
+            "homepage": "https://github.com/pembuatan",
             "role": "Developer"
         }
     ],
